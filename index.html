@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinaliza - Acessibilidade em Libras</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #001a8d; 
+            --bg-light: #f4f7ff;
+            --white: #ffffff;
+            --text-dark: #1a1a1a;
+            --gray: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; /* Evita scroll horizontal indesejado */
+        }
+
+        header {
+            background-color: var(--white);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            flex-wrap: wrap; /* Permite quebrar linha em telas muito pequenas */
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 50px; /* Reduzi um pouco para telas menores */
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .badge-app {
+            color: var(--primary-blue);
+            font-weight: bold;
+            border: 2px solid;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        h1 {
+            color: var(--primary-blue);
+            font-size: clamp(1.5rem, 5vw, 2.2rem); /* Fonte fluida */
+            margin-bottom: 1rem;
+        }
+
+        p.subtitle {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+        }
+
+        /* Caixa de busca responsiva */
+        .search-box {
+            display: flex;
+            background: var(--white);
+            padding: 8px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,26,141,0.1);
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 0 15px;
+            font-size: 1rem;
+            min-width: 0; /* Importante para o flex não quebrar no mobile */
+        }
+
+        .btn-action {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            min-width: 45px; /* Garante que o botão não encolha */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 5px;
+            transition: 0.3s;
+            font-size: 1.2rem;
+        }
+
+        /* Ajustes para Mobile */
+        @media (max-width: 480px) {
+            header {
+                justify-content: center;
+                padding: 1rem;
+            }
+            
+            .search-box {
+                border-radius: 20px;
+                padding: 10px;
+            }
+
+            .btn-action {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+            }
+        }
+
+        /* Card de Resultado */
+        .result-container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            border-left: 5px solid var(--primary-blue);
+            word-wrap: break-word; /* Evita que textos longos quebrem o layout */
+        }
+
+        .instruction {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--gray);
+            font-size: 0.75rem;
+            width: 100%;
+        }
+        
+        /* Estilização para o VLibras */
+        .vpw-controls {
+            border-radius: 10px !important;
+        }
+
+        /* Ajuste para o botão do VLibras não cobrir o conteúdo no mobile */
+        [vw-access-button] {
+            width: 40px !important;
+            height: 40px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="image-Photoroom (1).png" alt="Sinaliza Logo" class="logo-img">
+        </div>
+        <div class="badge-app">
+            App de Acessibilidade
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <h1>Tradutor Sinaliza</h1>
+            <p class="subtitle">Digite ou fale para que nosso avatar traduza para Libras em tempo real.</p>
+            
+            <div class="search-box">
+                <input type="text" id="userInput" placeholder="O que você quer dizer?">
+                <button class="btn-action" onclick="startVoice()" title="Usar Voz">🎤</button>
+                <button class="btn-action" onclick="showTranslation()" title="Traduzir">➔</button>
+            </div>
+        </section>
+
+        <div class="result-container" id="resultCard">
+            <h3 id="displayTitle">Aguardando interação...</h3>
+            <p id="displayText">Ao digitar e ativar o avatar, passe/clique o cursor do mouse em cima do que deseja traduzir.</p>
+        </div>
+
+        <p class="instruction">Ao digitar, ative o avatar e clique em cima do texto que deseja traduzir.</p>
+    </main>
+
+    <footer>
+        &copy; 2026 Glória Maria - DS. Todos os direitos reservados. <br> 
+        Sinaliza - Transformando comunicação em inclusão.
+    </footer>
+
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+
+    <script>
+        function showTranslation() {
+            const input = document.getElementById('userInput').value;
+            const title = document.getElementById('displayTitle');
+            const text = document.getElementById('displayText');
+
+            if (input.trim() === "") {
+                alert("Por favor, digite algo para sinalizar.");
+                return;
+            }
+
+            title.innerText = "Texto Identificado:";
+            text.innerText = input;
+        }
+
+        function startVoice() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
+            if (!SpeechRecognition) {
+                alert("Seu navegador não suporta reconhecimento de voz.");
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'pt-BR';
+            
+            recognition.onstart = () => {
+                document.getElementById('userInput').placeholder = "Ouvindo agora...";
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('userInput').value = transcript;
+                showTranslation();
+            };
+
+            recognition.onerror = () => {
+                alert("Erro ao acessar o microfone ou permissão negada.");
+                document.getElementById('userInput').placeholder = "O que você quer dizer?";
+            };
+
+            recognition.start();
+        }
+    </script>
+</body>
+</html>
